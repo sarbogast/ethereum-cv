@@ -26,7 +26,7 @@ contract Resume is CVExtender, mortal {
         return experienceCounter;
     }
 
-    function getExperiences() returns (uint256[] experienceIds, int[] startDates, int[] endDates, bytes32[] employers, bytes32[] cities, bytes32[] countries, bytes32[] descriptions) {
+    function getExperienceList() returns (uint256[] experienceIds, int[] startDates, int[] endDates, bytes32[] employers, bytes32[] cities, bytes32[] countries, bytes32[] descriptions) {
         if(experienceCounter == 0) {
             throw;
         }
