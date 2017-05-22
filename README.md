@@ -1,29 +1,96 @@
-# truffle-init-webpack
-Example webpack project with Truffle. Includes contracts, migrations, tests, user interface and webpack build pipeline.
+# Ethereum CV
+Sample Ethereum Smart Contract to create your resume.
 
-## Usage
+Follow the steps described here below to install, deploy and run the Dapp.
 
-To initialize a project with this exapmple, run `truffle init webpack` inside an empty directory.
+## Step 1. Clone the project
 
-## Building and the frontend
+`git clone https://github.com/sarbogast/ethereum-cv.git`
 
-1. First run `truffle compile`, then run `truffle migrate` to deploy the contracts onto your network of choice (default "development").
-1. Then run `npm run dev` to build the app and serve it on http://localhost:8080
 
-## Possible upgrades
+## Step 2. Install all modules
 
-* Use the webpack hotloader to sense when contracts or javascript have been recompiled and rebuild the application. Contributions welcome!
+`cd ethereum-cv`
+`npm install`
 
-## Common Errors
 
-* **Error: Can't resolve '../build/contracts/MetaCoin.json'**
+## Step 3. Start your Ethereum node
 
-This means you haven't compiled or migrated your contracts yet. Run `truffle compile` and `truffle migrate` first.
+Start testrpc or your private chain
 
-Full error:
+## Step 4. Configure your project
 
-```
-ERROR in ./app/main.js
-Module not found: Error: Can't resolve '../build/contracts/MetaCoin.json' in '/Users/tim/Documents/workspace/Consensys/test3/app'
- @ ./app/main.js 11:16-59
-```
+Edit the file "truffle.js" and set the port number according your Ethereum node.
+
+## Step 5. Compile and Deploy your smart contract
+
+`truffle compile`
+`truffle migrate`
+
+## Step 6. Metamask: link to your private node
+
+Open the Metamask extension on Chrome and switch it to the address of your Ethereum node.
+
+## Step 7. Metamask: import your accounts
+
+Import the accounts defined in your Ethereum node.
+
+## Step 8. Run you server
+
+`npm run dev`
+
+## Step 9. Metamask: switch to the coinbase account
+
+The experience of your resume can be added only by the owner of the smart contract.
+From Metamask, switch your account to the account used to deploy the contract.
+
+From the Geth console, this account can be identified by running this command:
+`eth.coinbase`
+
+From testrpc, the default account is the account[0]
+
+## Step 10. Open the application
+
+From your browser, open the URL: http://localhost:8080
+
+## Step 11. Add an experience
+
+As the owner of the Smart Contract, add a new experience.
+
+Metasmask will ask you to confirm the transaction.
+
+## Step 12. Start the mining
+
+If it's not already the case, start the mining process.
+
+From the Geth console, start the following command:
+`miner.start()`
+
+From testrpc, the mining is already started.
+
+## Step 13. Display the experience
+
+When the block is mined, the experiences will be automatically displayed.
+
+## Step 14. Superstitious ?
+
+This step is empty to avoid 13 steps :-)
+
+## Bonus
+
+* Add an experience with an account that is not the contract's owner. The new experience should not be appended to the list.
+* Switch to an account that is not the contract's owner and try to refresh the page. You should able to see all experiences.
+* Display the events:
+** Uncomment the div section from the index.html file
+** Uncomment the code located into the listenToEvents function
+
+## Tips
+
+* Is Metasmask slow ? try to disable and enable the extension.
+* This behaviour happens sometimes mainly when we work with a private chain.
+* when you switch the account from Metamask, don't forget to refresh the page of your application to ensure to get the current account set on Metamask.
+
+
+Have fun !!!
+
+ChainSkills Team - 2017
