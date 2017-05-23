@@ -55,6 +55,10 @@ contract Resume is CVExtender, mortal {
         return(experienceId, startDate, endDate, employer, city, country, description);
     }
 
+    function isOwner(address toCheck) constant returns (bool owned) {
+        return toCheck == owner;
+    }
+
      /**
       * Below is for our CV!
       * */
