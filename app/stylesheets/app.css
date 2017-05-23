@@ -50,3 +50,11 @@ h3 {
 .hint {
   color: #666;
 }
+
+
+.welcome {
+     font-size: 18px;
+     background-color: #F6851B;
+     display:inline;
+     padding: 5px;
+}
