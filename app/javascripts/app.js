@@ -8,7 +8,7 @@ import {default as contract} from 'truffle-contract';
 import resume_artifacts from '../../build/contracts/Resume.json';
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
-var Resume = contract(resume_artifacts)
+var Resume = contract(resume_artifacts);
 
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
@@ -18,7 +18,7 @@ var account;
 var accountBalance;
 
 // library use to format the date
-var moment = require('moment')
+var moment = require('moment');
 
 window.App = {
     start: function () {
@@ -127,7 +127,7 @@ function cleanExperienceList() {
     var elements = document.getElementsByClassName('experience');
 
     while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0])
+        elements[0].parentNode.removeChild(elements[0]);
     }
 }
 
@@ -188,13 +188,13 @@ function displayExperience(experienceId, startDate, endDate, employer, city, cou
 window.addEventListener('load', function () {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source. If you find that your accounts don\'t appear or you have 0 MetaCoin, ensure you\'ve configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask')
+        console.warn('Using web3 detected from external source. If you find that your accounts don\'t appear or you have 0 MetaCoin, ensure you\'ve configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask');
         // Use Mist/MetaMask's provider
-        window.web3 = new Web3(web3.currentProvider)
+        window.web3 = new Web3(web3.currentProvider);
     } else {
-        console.warn('No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it\'s inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask')
+        console.warn('No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it\'s inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask');
         // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+        window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
     }
 
     App.start()
