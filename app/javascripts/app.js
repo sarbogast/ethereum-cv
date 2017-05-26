@@ -84,7 +84,7 @@ window.App = {
         });
     },
 
-    resetExperienceForm: function() {
+    resetExperienceForm: function () {
         document.getElementById('startDate').value = null;
         document.getElementById('endDate').value = null;
         document.getElementById('present').checked = false;
@@ -126,18 +126,21 @@ window.App = {
 
     // Listen for events raised from the contract
     listenToEvents: function () {
+        Resume.deployed().then(function (instance) {
+            instance.onExperienceAdded({}, {
+                fromBlock: 0,
+                toBlock: 'latest'
+            }).watch(function (error, event) {
+                document.getElementById("events").innerHTML += '<li class="list-group-item">Experience #' + event.args.experienceId.toNumber() + ' was added, starting on ' + new Date(event.args.startDate.toNumber()) + ', working for ' + web3.toAscii(event.args.employer) + ' as a ' + web3.toAscii(event.args.role) + '</li>';
+            });
 
-        // Uncomment the following lines if you want to display the events
-        /*
-         Resume.deployed().then(function(instance) {
-         instance.onExperienceAdded({}, {
-         fromBlock: 0,
-         toBlock: 'latest'
-         }).watch(function(error, event) {
-         document.getElementById("experienceAdded").innerHTML += JSON.stringify(event);
-         });
-         });
-         */
+            instance.onExperienceClosed({}, {
+                fromBlock: 0,
+                toBlock: 'latest'
+            }).watch(function (error, event) {
+                document.getElementById("events").innerHTML += '<li class="list-group-item">Experience #' + event.args.experienceId.toNumber() + ' was closed on ' + new Date(event.args.endDate.toNumber()) + '</li>';
+            });
+        });
     },
 
     // Clear the list of experiences to display the fresh one
@@ -152,9 +155,9 @@ window.App = {
     // Display an experience in the list
     displayExperience: function (experienceId) {
 
-        Resume.deployed().then(function(instance) {
+        Resume.deployed().then(function (instance) {
             return instance.getExperience(experienceId);
-        }).then(function(experience) {
+        }).then(function (experience) {
             var experienceObject = {
                 id: experienceId,
                 startDate: new Date(Number(experience[0])),
@@ -212,7 +215,7 @@ window.App = {
 
             rowMarker.appendChild(divMarker);
 
-            if(isOwner && experienceObject.present) {
+            if (isOwner && experienceObject.present) {
                 var closeDiv = document.createElement('div');
                 closeDiv.className = 'input-group col-xs-4';
                 closeDiv.innerHTML = '<input class="form-control" type="date" id="closeDate-' + experienceId + '"><span class="input-group-btn"><button id="closeButton-' + experienceId + '" type="button" class="btn btn-danger" onclick="App.closeExperience(' + experienceId + '); return false;">Close</button></span>';
@@ -228,17 +231,17 @@ window.App = {
         });
     },
 
-    closeExperience: function(experienceId) {
+    closeExperience: function (experienceId) {
         var dateInput = document.getElementById('closeDate-' + experienceId);
         var endDateString = dateInput.value;
-        if(endDateString !== '') {
+        if (endDateString !== '') {
             var closeButton = document.getElementById('closeButton-' + experienceId);
             closeButton.disabled = true;
             dateInput.disabled = true;
             var endDate = new Date(endDateString);
-            Resume.deployed().then(function(instance) {
+            Resume.deployed().then(function (instance) {
                 return instance.closeOpenExperience(experienceId, endDate.getTime(), {from: account, gas: 500000});
-            }).then(function() {
+            }).then(function () {
                 App.reloadExperiences();
             }).catch(function (err) {
                 console.error(err);

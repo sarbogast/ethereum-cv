@@ -17,40 +17,36 @@
     </div>
 
     <div class="col-md-12" id="experience-list">
-         <div class="row">
-              <div class="col-lg-12">
-                   <p id="coinbase" class="welcome pull-left"></p>
-                   <p id="coinbaseBalance" class="welcome pull-right"></p>
-              </div>
-         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p id="coinbase" class="welcome pull-left"></p>
+                <p id="coinbaseBalance" class="welcome pull-right"></p>
+            </div>
+        </div>
 
-         <div class="row" id="addExperienceSection" style="display:none;">
-             <div class="col-lg-12">
-                 <div class="well hidden-xs">
-                     <div class="row">
-                         <div class="col-xs-12">
-                             <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal"
-                                     data-target="#addExperience">Add an experience
-                             </button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
+        <div class="row panel panel-default">
+            <div class="panel-heading clearfix">
+                <div class="panel-title">Events
+                    <button class="pull-right btn" data-toggle="collapse" data-target="#events" aria-expanded="false" aria-controls="events">V</button>
+                </div>
+            </div>
+            <ul id="events" class="collapse list-group"></ul>
+        </div>
+
+        <div class="row" id="addExperienceSection" style="display:none;">
+            <div class="col-lg-12">
+                <div class="well hidden-xs">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal"
+                                    data-target="#addExperience">Add an experience
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-    <!-- Uncomment the following lines if you want to display the events -->
-
-    <!--
-    <div class="row">
-         <div class="col-lg-12">
-              <h3>Experiences</h3>
-              <div class="event" id="experienceAdded"></div>
-         </div>
-    </div>
-    -->
-
 
     <!-- Modal form to add an experience -->
     <div class="modal fade" id="addExperience" role="dialog">
@@ -87,7 +83,7 @@
                                 <div class="form-group">
                                     <label for="employer">Employer</label>
                                     <input type="text" class="form-control vresize" id="employer"
-                                              placeholder="Employer" maxlength="255">
+                                           placeholder="Employer" maxlength="255">
                                 </div>
                                 <div class="form-group">
                                     <label for="city">City</label>
