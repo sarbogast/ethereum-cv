@@ -38,6 +38,7 @@ contract Resume is CVExtender, mortal {
         Experience experience = experiences[experienceId];
         if(experience.present) {
             experience.endDate = endDate;
+            experience.present = false;
             onExperienceClosed(experienceId, experiences[experienceId].endDate);
             return true;
         } else {

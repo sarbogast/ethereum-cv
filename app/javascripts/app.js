@@ -28,7 +28,7 @@ window.App = {
 
         web3.eth.getCoinbase(function (err, data) {
             if (err === null) {
-                console.log(data);
+                //console.log(data);
                 account = data;
 
                 web3.eth.getBalance(account, function (err, data) {
@@ -81,7 +81,7 @@ window.App = {
             App.reloadExperiences();
         }).catch(function (err) {
             console.error(err);
-        })
+        });
     },
 
     resetExperienceForm: function() {
@@ -101,7 +101,7 @@ window.App = {
             return instance.getExperiences()
         }).then(function (result) {
             App.cleanExperienceList();
-            console.log(result);
+            //console.log(result);
 
             var experiences = [];
             for (var i = 0; i < result[0].length; i++) {
@@ -166,7 +166,7 @@ window.App = {
                 country: web3.toAscii(experience[6]),
                 description: experience[7]
             };
-            console.log(experienceObject);
+            //console.log(experienceObject);
 
             var rowMarker = document.createElement('div');
             rowMarker.className = 'row row-eq-height experience';
@@ -212,6 +212,13 @@ window.App = {
 
             rowMarker.appendChild(divMarker);
 
+            if(isOwner && experienceObject.present) {
+                var closeDiv = document.createElement('div');
+                closeDiv.className = 'input-group col-xs-4';
+                closeDiv.innerHTML = '<input class="form-control" type="date" id="closeDate-' + experienceId + '"><span class="input-group-btn"><button id="closeButton-' + experienceId + '" type="button" class="btn btn-danger" onclick="App.closeExperience(' + experienceId + '); return false;">Close</button></span>';
+                rowMarker.appendChild(closeDiv);
+            }
+
             var experienceList = document.getElementById('experience-list');
             experienceList.appendChild(rowMarker);
 
@@ -219,6 +226,24 @@ window.App = {
             hrMarker.className = 'experience';
             experienceList.appendChild(hrMarker);
         });
+    },
+
+    closeExperience: function(experienceId) {
+        var dateInput = document.getElementById('closeDate-' + experienceId);
+        var endDateString = dateInput.value;
+        if(endDateString !== '') {
+            var closeButton = document.getElementById('closeButton-' + experienceId);
+            closeButton.disabled = true;
+            dateInput.disabled = true;
+            var endDate = new Date(endDateString);
+            Resume.deployed().then(function(instance) {
+                return instance.closeOpenExperience(experienceId, endDate.getTime(), {from: account, gas: 500000});
+            }).then(function() {
+                App.reloadExperiences();
+            }).catch(function (err) {
+                console.error(err);
+            });
+        }
     }
 };
 
