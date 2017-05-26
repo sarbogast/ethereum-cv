@@ -38550,7 +38550,8 @@ window.App = {
     // Load and display the list of experiences
     reloadExperiences: function () {
         Resume.deployed().then(function (instance) {
-            return instance.getExperiences()
+            console.log(instance.address);
+            return instance.getExperiences();
         }).then(function (result) {
             App.cleanExperienceList();
             //console.log(result);
