@@ -37898,6 +37898,52 @@ module.exports = {
 			"type": "function"
 		},
 		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "newStartDate",
+					"type": "int256"
+				},
+				{
+					"name": "newEndDate",
+					"type": "int256"
+				},
+				{
+					"name": "newPresent",
+					"type": "bool"
+				},
+				{
+					"name": "newRole",
+					"type": "bytes32"
+				},
+				{
+					"name": "newEmployer",
+					"type": "bytes32"
+				},
+				{
+					"name": "newCity",
+					"type": "bytes32"
+				},
+				{
+					"name": "newCountry",
+					"type": "bytes32"
+				},
+				{
+					"name": "newDescription",
+					"type": "string"
+				}
+			],
+			"name": "addExperience",
+			"outputs": [
+				{
+					"name": "experienceId",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"type": "function"
+		},
+		{
 			"constant": true,
 			"inputs": [],
 			"name": "getAddress",
@@ -37922,35 +37968,19 @@ module.exports = {
 			"constant": false,
 			"inputs": [
 				{
-					"name": "newStartDate",
-					"type": "int256"
-				},
-				{
-					"name": "newEndDate",
-					"type": "int256"
-				},
-				{
-					"name": "newEmployer",
-					"type": "bytes32"
-				},
-				{
-					"name": "newCity",
-					"type": "bytes32"
-				},
-				{
-					"name": "newCountry",
-					"type": "bytes32"
-				},
-				{
-					"name": "newDescription",
-					"type": "bytes32"
-				}
-			],
-			"name": "addExperience",
-			"outputs": [
-				{
 					"name": "experienceId",
 					"type": "uint256"
+				},
+				{
+					"name": "endDate",
+					"type": "int256"
+				}
+			],
+			"name": "closeOpenExperience",
+			"outputs": [
+				{
+					"name": "success",
+					"type": "bool"
 				}
 			],
 			"payable": false,
@@ -37964,6 +37994,31 @@ module.exports = {
 				{
 					"name": "",
 					"type": "bool"
+				}
+			],
+			"payable": false,
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "getExperiences",
+			"outputs": [
+				{
+					"name": "experienceIds",
+					"type": "uint256[]"
+				},
+				{
+					"name": "startDates",
+					"type": "int256[]"
+				},
+				{
+					"name": "endDates",
+					"type": "int256[]"
+				},
+				{
+					"name": "presents",
+					"type": "bool[]"
 				}
 			],
 			"payable": false,
@@ -37988,36 +38043,45 @@ module.exports = {
 		},
 		{
 			"constant": true,
-			"inputs": [],
-			"name": "getExperienceList",
+			"inputs": [
+				{
+					"name": "experienceId",
+					"type": "uint256"
+				}
+			],
+			"name": "getExperience",
 			"outputs": [
 				{
-					"name": "experienceIds",
-					"type": "uint256[]"
+					"name": "startDate",
+					"type": "int256"
 				},
 				{
-					"name": "startDates",
-					"type": "int256[]"
+					"name": "endDate",
+					"type": "int256"
 				},
 				{
-					"name": "endDates",
-					"type": "int256[]"
+					"name": "present",
+					"type": "bool"
 				},
 				{
-					"name": "employers",
-					"type": "bytes32[]"
+					"name": "role",
+					"type": "bytes32"
 				},
 				{
-					"name": "cities",
-					"type": "bytes32[]"
+					"name": "employer",
+					"type": "bytes32"
 				},
 				{
-					"name": "countries",
-					"type": "bytes32[]"
+					"name": "city",
+					"type": "bytes32"
 				},
 				{
-					"name": "descriptions",
-					"type": "bytes32[]"
+					"name": "country",
+					"type": "bytes32"
+				},
+				{
+					"name": "description",
+					"type": "string"
 				}
 			],
 			"payable": false,
@@ -38055,6 +38119,14 @@ module.exports = {
 					"type": "int256"
 				},
 				{
+					"name": "present",
+					"type": "bool"
+				},
+				{
+					"name": "role",
+					"type": "bytes32"
+				},
+				{
 					"name": "employer",
 					"type": "bytes32"
 				},
@@ -38068,7 +38140,7 @@ module.exports = {
 				},
 				{
 					"name": "description",
-					"type": "bytes32"
+					"type": "string"
 				}
 			],
 			"payable": false,
@@ -38092,6 +38164,11 @@ module.exports = {
 			"inputs": [
 				{
 					"indexed": false,
+					"name": "experienceId",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
 					"name": "startDate",
 					"type": "int256"
 				},
@@ -38099,6 +38176,16 @@ module.exports = {
 					"indexed": false,
 					"name": "endDate",
 					"type": "int256"
+				},
+				{
+					"indexed": false,
+					"name": "present",
+					"type": "bool"
+				},
+				{
+					"indexed": false,
+					"name": "role",
+					"type": "bytes32"
 				},
 				{
 					"indexed": false,
@@ -38118,14 +38205,31 @@ module.exports = {
 				{
 					"indexed": false,
 					"name": "description",
-					"type": "bytes32"
+					"type": "string"
 				}
 			],
 			"name": "onExperienceAdded",
 			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"name": "experienceId",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"name": "endDate",
+					"type": "int256"
+				}
+			],
+			"name": "onExperienceClosed",
+			"type": "event"
 		}
 	],
-	"unlinked_binary": "0x60606040525b60008054600160a060020a03191633600160a060020a03161790555b5b610e19806100316000396000f300606060405236156100935763ffffffff60e060020a6000350416631a09254181146100955780632f54bf6e1461012557806338cc48311461015557806341c0e1b5146101e55780635b53f9ab146101f75780637e9aef531461022b578063a5faa1251461024f578063cd81243014610355578063cead9223146105a2578063cf3e7c7c146105c4578063ff3c1a8f1461060a575bfe5b341561009d57fe5b6100a561069a565b6040805160208082528351818301528351919283929083019185019080838382156100eb575b8051825260208311156100eb57601f1990920191602091820191016100cb565b505050905090810190601f1680156101175780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561012d57fe5b610141600160a060020a03600435166106d8565b604080519115158252519081900360200190f35b341561015d57fe5b6100a56106ef565b6040805160208082528351818301528351919283929083019185019080838382156100eb575b8051825260208311156100eb57601f1990920191602091820191016100cb565b505050905090810190601f1680156101175780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34156101ed57fe5b6101f5610730565b005b34156101ff57fe5b61021960043560243560443560643560843560a435610758565b60408051918252519081900360200190f35b341561023357fe5b6101416108bc565b604080519115158252519081900360200190f35b341561025757fe5b61025f610970565b6040518080602001806020018381038352858181518152602001915080519060200190808383600083146102ae575b8051825260208311156102ae57601f19909201916020918201910161028e565b505050905090810190601f1680156102da5780820380516001836020036101000a031916815260200191505b5083810382528451815284516020918201918601908083838215610319575b80518252602083111561031957601f1990920191602091820191016102f9565b505050905090810190601f1680156103455780820380516001836020036101000a031916815260200191505b5094505050505060405180910390f35b341561035d57fe5b6103656109e8565b604051808060200180602001806020018060200180602001806020018060200188810388528f8181518152602001915080519060200190602002808383600083146103cb575b8051825260208311156103cb57601f1990920191602091820191016103ab565b50505090500188810387528e818151815260200191508051906020019060200280838360008314610417575b80518252602083111561041757601f1990920191602091820191016103f7565b50505090500188810386528d818151815260200191508051906020019060200280838360008314610463575b80518252602083111561046357601f199092019160209182019101610443565b5050509190910189810386528d5181528d5160209182019250818f01910280838382156104ab575b8051825260208311156104ab57601f19909201916020918201910161048b565b5050509190910189810385528c5181528c5160209182019250818e01910280838382156104f3575b8051825260208311156104f357601f1990920191602091820191016104d3565b5050509190910189810384528b5181528b5160209182019250818d019102808383821561053b575b80518252602083111561053b57601f19909201916020918201910161051b565b5050509190910189810383528a5181528a5160209182019250818c0191028083838215610583575b80518252602083111561058357601f199092019160209182019101610563565b5050509050019e50505050505050505050505050505060405180910390f35b34156105aa57fe5b610219610ce8565b60408051918252519081900360200190f35b34156105cc57fe5b6105d7600435610cee565b604080519687526020870195909552858501939093526060850191909152608084015260a0830152519081900360c00190f35b341561061257fe5b6100a5610d24565b6040805160208082528351818301528351919283929083019185019080838382156100eb575b8051825260208311156100eb57601f1990920191602091820191016100cb565b505050905090810190601f1680156101175780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6106a2610d5e565b506040805180820190915260178152604960020a7626bc9021ab1037b7103a343290313637b1b5b1b430b4b70260208201525b90565b600054600160a060020a038281169116145b919050565b6106f7610d5e565b5060408051808201909152601c81527f687474703a2f2f657468657265756d2d63762e6769746875622e696f0000000060208201525b90565b60005433600160a060020a039081169116141561075557600054600160a060020a0316ff5b5b565b6000805433600160a060020a03908116911614156108b05760026000815480929190600101919050555060c0604051908101604052808881526020018781526020018660001916815260200185600019168152602001846000191681526020018360001916815250600160006002548152602001908152602001600020600082015181600001556020820151816001015560408201518160020190600019169055606082015181600301906000191690556080820151816004019060001916905560a082015181600501906000191690559050507f3e87bd929e6c31d12f8ca2feb868db9a1d27955456b400a0803b56d60e16d75e878787878787604051808781526020018681526020018560001916600019168152602001846000191660001916815260200183600019166000191681526020018260001916600019168152602001965050505050505060405180910390a1506002545b5b5b9695505050505050565b60006108c6610d5e565b6108ce610d5e565b6108d6610d5e565b6108de61069a565b92508251600014156108f3576000935061096a565b6108fb610d24565b9250825160001415610910576000935061096a565b610918610970565b91509150819250825160001415610932576000935061096a565b809250825160001415610948576000935061096a565b6109506106ef565b9250825160001415610965576000935061096a565b600193505b50505090565b610978610d5e565b610980610d5e565b505060408051808201825260128152607260020a7114d958985cdd1a595b88105c989bd859dcdd026020808301919091528251808401909352601f83527f73656261737469656e2e6172626f676173744065707365656c6f6e2e636f6d0090830152905b9091565b6109f0610d5e565b6109f8610d5e565b610a00610d5e565b610a08610d5e565b610a10610d5e565b610a18610d5e565b610a20610d5e565b610a28610d5e565b610a30610d5e565b610a38610d5e565b610a40610d5e565b610a48610d5e565b610a50610d5e565b610a58610d5e565b6000610a62610db8565b6002541515610a715760006000fd5b600254604051805910610a815750595b908082528060200260200182016040525b509850600254604051805910610aa55750595b908082528060200260200182016040525b509750600254604051805910610ac95750595b908082528060200260200182016040525b509650600254604051805910610aed5750595b908082528060200260200182016040525b509550600254604051805910610b115750595b908082528060200260200182016040525b509450600254604051805910610b355750595b908082528060200260200182016040525b509350600254604051805910610b595750595b908082528060200260200182016040525b509250600191505b6002548211610cc05750600081815260016020818152604092839020835160c081018552815481529281015491830191909152600281015492820192909252600382015460608201526004820154608082015260059091015460a08201528251829084906000198301908110610be457fe5b60209081029091010152805189518a906000198501908110610c0257fe5b906020019060200201818152505080602001518860018403815181101515610c2657fe5b602090810290910101526040810151875188906000198501908110610c4757fe5b602090810290910101526060810151865187906000198501908110610c6857fe5b602090810290910101526080810151855186906000198501908110610c8957fe5b6020908102909101015260a0810151845185906000198501908110610caa57fe5b602090810290910101525b600190910190610b72565b828989898989899f509f509f509f509f509f509f505b50505050505050505090919293949596565b60025481565b60016020819052600091825260409091208054918101546002820154600383015460048401546005909401549293919290919086565b610d2c610d5e565b506040805180820190915260138152606960020a72233ab63639ba30b1b5902232bb32b637b832b90260208201525b90565b60408051602081019091526000815290565b60408051602081019091526000815290565b60408051602081019091526000815290565b60408051602081019091526000815290565b60408051602081019091526000815290565b6040805160c081018252600080825260208201819052918101829052606081018290526080810182905260a0810191909152905600a165627a7a72305820ed5ae288d90fbf79e2f2d8589567698f5b3a13964fce978742d033a5062cde3f0029",
+	"unlinked_binary": "0x60606040525b60008054600160a060020a03191633600160a060020a03161790555b5b611208806100316000396000f300606060405236156100a95763ffffffff60e060020a6000350416631a09254181146100ab5780632f54bf6e1461013b578063358865d41461016b57806338cc4831146101f057806341c0e1b5146102805780636c432258146102925780637e9aef53146102bc578063a447a556146102e0578063a5faa1251461043b578063b1ca210614610541578063cead922314610616578063cf3e7c7c14610638578063ff3c1a8f1461070e575bfe5b34156100b357fe5b6100bb61079e565b604080516020808252835181830152835191928392908301918501908083838215610101575b80518252602083111561010157601f1990920191602091820191016100e1565b505050905090810190601f16801561012d5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561014357fe5b610157600160a060020a03600435166107dc565b604080519115158252519081900360200190f35b341561017357fe5b604080516020601f60e4356004818101359283018490048402850184019095528184526101de948035946024803595604435151595606435956084359560a4359560c4359591946101049491939092019181908401838280828437509496506107f395505050505050565b60408051918252519081900360200190f35b34156101f857fe5b6100bb6109e5565b604080516020808252835181830152835191928392908301918501908083838215610101575b80518252602083111561010157601f1990920191602091820191016100e1565b505050905090810190601f16801561012d5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561028857fe5b610290610a3f565b005b341561029a57fe5b610157600435602435610a67565b604080519115158252519081900360200190f35b34156102c457fe5b610157610b12565b604080519115158252519081900360200190f35b34156102e857fe5b6102f0610bc6565b604051808060200180602001806020018060200185810385528981815181526020019150805190602001906020028083836000831461034a575b80518252602083111561034a57601f19909201916020918201910161032a565b50505091909101868103855289518152895160209182019250818b0191028083838215610392575b80518252602083111561039257601f199092019160209182019101610372565b50505091909101868103845288518152885160209182019250818a01910280838382156103da575b8051825260208311156103da57601f1990920191602091820191016103ba565b5050509190910186810383528751815287516020918201925081890191028083838215610422575b80518252602083111561042257601f199092019160209182019101610402565b5050509050019850505050505050505060405180910390f35b341561044357fe5b61044b610e59565b60405180806020018060200183810383528581815181526020019150805190602001908083836000831461049a575b80518252602083111561049a57601f19909201916020918201910161047a565b505050905090810190601f1680156104c65780820380516001836020036101000a031916815260200191505b5083810382528451815284516020918201918601908083838215610505575b80518252602083111561050557601f1990920191602091820191016104e5565b505050905090810190601f1680156105315780820380516001836020036101000a031916815260200191505b5094505050505060405180910390f35b341561054957fe5b610554600435610ed1565b6040805189815260208082018a905288151592820192909252606081018790526080810186905260a0810185905260c0810184905261010060e0820181815284519183019190915283519192909161012084019185019080838382156105d5575b8051825260208311156105d557601f1990920191602091820191016105b5565b505050905090810190601f1680156106015780820380516001836020036101000a031916815260200191505b50995050505050505050505060405180910390f35b341561061e57fe5b6101de610fe8565b60408051918252519081900360200190f35b341561064057fe5b61064b600435610fee565b604080518981526020810189905287151591810191909152606081018690526080810185905260a0810184905260c0810183905261010060e082018181528354600260018216158402600019019091160491830182905290610120830190849080156106f85780601f106106cd576101008083540402835291602001916106f8565b820191906000526020600020905b8154815290600101906020018083116106db57829003601f168201915b5050995050505050505050505060405180910390f35b341561071657fe5b6100bb611032565b604080516020808252835181830152835191928392908301918501908083838215610101575b80518252602083111561010157601f1990920191602091820191016100e1565b505050905090810190601f16801561012d5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6107a6611085565b506040805180820190915260178152604960020a7626bc9021ab1037b7103a343290313637b1b5b1b430b4b70260208201525b90565b600054600160a060020a038281169116145b919050565b6000805433600160a060020a03908116911614156109d7578615801561081857508888125b156108235760006000fd5b60028054600190810180835560408051610100810182528d815260208082018e81528d1515838501908152606084018e8152608085018e815260a086018e815260c087018e815260e088018e815260009a8b528b885298909920875181559451998501999099559151988301805460ff191699151599909917909855965160038201559551600487015593516005860155915160068501555180519193926108d392600785019290910190611097565b50506002546040805182815260208082018e90529181018c90528a15156060820152608081018a905260a0810189905260c0810188905260e08101879052610120610100820181815287519183019190915286517f1f6281d3c80ed49021d94b5610267712d7a08b8ba9630f98b863711b0e24458995508e938e938e938e938e938e938e938e93919290916101408401918501908083838215610991575b80518252602083111561099157601f199092019160209182019101610971565b505050905090810190601f1680156109bd5780820380516001836020036101000a031916815260200191505b509a505050505050505050505060405180910390a1506002545b5b5b98975050505050505050565b6109ed611085565b606060405190810160405280602981526020017f687474703a2f2f657468657265756d2d63762e73656261737469656e2d617262815260200160b860020a686f676173742e636f6d0281525090505b90565b60005433600160a060020a0390811691161415610a6457600054600160a060020a0316ff5b5b565b60008054819033600160a060020a0390811691161415610b0857506000838152600160205260409020600281015460ff1615610b0357600180820184905560028201805460ff19169055600085815260208281526040918290209092015481518781529283015280517fec271d1d44c5a78a96a0afd2a17c33a68c38c2143be67b5880bb07f5ccabdd0b9281900390910190a160019150610b08565b600091505b5b5b5b5092915050565b6000610b1c611085565b610b24611085565b610b2c611085565b610b3461079e565b9250825160001415610b495760009350610bc0565b610b51611032565b9250825160001415610b665760009350610bc0565b610b6e610e59565b91509150819250825160001415610b885760009350610bc0565b809250825160001415610b9e5760009350610bc0565b610ba66109e5565b9250825160001415610bbb5760009350610bc0565b600193505b50505090565b610bce611085565b610bd6611085565b610bde611085565b610be6611085565b610bee611085565b610bf6611085565b610bfe611085565b610c06611085565b6000610c1061115e565b6002541515610c1f5760006000fd5b600254604051805910610c2f5750595b908082528060200260200182016040525b509550600254604051805910610c535750595b908082528060200260200182016040525b509450600254604051805910610c775750595b908082528060200260200182016040525b509350600254604051805910610c9b5750595b908082528060200260200182016040525b509250600191505b6002548211610e40576000828152600160208181526040928390208351610100818101865282548252828501548285015260028084015460ff161515838801526003840154606084015260048401546080840152600584015460a0840152600684015460c08401526007840180548851601f988216159094026000190116919091049586018590048502820185019096528481529094919360e0860193919291830182828015610da55780601f10610d7a57610100808354040283529160200191610da5565b820191906000526020600020905b815481529060010190602001808311610d8857829003601f168201915b5050505050815250509050818360018403815181101515610dc257fe5b602090810290910101528051865187906000198501908110610de057fe5b906020019060200201818152505080602001518560018403815181101515610e0457fe5b602090810290910101526040810151845185906000198501908110610e2557fe5b9115156020928302909101909101525b600190910190610cb4565b8286868699509950995099505b50505050505090919293565b610e61611085565b610e69611085565b505060408051808201825260128152607260020a7114d958985cdd1a595b88105c989bd9d85cdd026020808301919091528251808401909352601f83527f73656261737469656e2e6172626f676173744065707365656c6f6e2e636f6d0090830152905b9091565b6000600060006000600060006000610ee7611085565b6000600160008b8152602001908152602001600020905080600001549850806001015497508060020160009054906101000a900460ff16965080600301549550806004015494508060050154935080600601549250806007018054600181600116156101000203166002900480601f016020809104026020016040519081016040528092919081815260200182805460018160011615610100020316600290048015610fd45780601f10610fa957610100808354040283529160200191610fd4565b820191906000526020600020905b815481529060010190602001808311610fb757829003601f168201915b505050505091505b50919395975091939597565b60025481565b600160208190526000918252604090912080549181015460028201546003830154600484015460058501546006860154949560ff9094169492939192909160070188565b61103a611085565b606060405190810160405280602281526020017f53656261737469656e204172626f676173742c204461707020446576656c6f70815260200160f160020a6132b90281525090505b90565b60408051602081019091526000815290565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106110d857805160ff1916838001178555611105565b82800160010185558215611105579182015b828111156111055782518255916020019190600101906110ea565b5b506111129291506111a9565b5090565b60408051602081019091526000815290565b60408051602081019091526000815290565b60408051602081019091526000815290565b60408051602081019091526000815290565b6040805161010081018252600080825260208201819052918101829052606081018290526080810182905260a0810182905260c081019190915260e081016111a4611085565b905290565b6107d991905b8082111561111257600081556001016111af565b5090565b90565b604080516020810190915260008152905600a165627a7a723058209cbf2c763f801ae4a462cbb09f2ca33f19c1f66ae62d9da58efe52a72c0f93030029",
 	"networks": {
 		"1": {
 			"events": {
@@ -38165,11 +38269,80 @@ module.exports = {
 					],
 					"name": "onExperienceAdded",
 					"type": "event"
+				},
+				"0x1f6281d3c80ed49021d94b5610267712d7a08b8ba9630f98b863711b0e244589": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "experienceId",
+							"type": "uint256"
+						},
+						{
+							"indexed": false,
+							"name": "startDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "present",
+							"type": "bool"
+						},
+						{
+							"indexed": false,
+							"name": "role",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "employer",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "city",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "country",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "description",
+							"type": "string"
+						}
+					],
+					"name": "onExperienceAdded",
+					"type": "event"
+				},
+				"0xec271d1d44c5a78a96a0afd2a17c33a68c38c2143be67b5880bb07f5ccabdd0b": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "experienceId",
+							"type": "uint256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						}
+					],
+					"name": "onExperienceClosed",
+					"type": "event"
 				}
 			},
 			"links": {},
-			"address": "0xe686c8ff8b41b0bfa71d231572cc72a5d3a6d247",
-			"updated_at": 1495710473455
+			"address": "0xd6f05154663a920c94ece2a4f8e72ed758a1aded",
+			"updated_at": 1495836388187
 		},
 		"42": {
 			"events": {
@@ -38209,15 +38382,308 @@ module.exports = {
 					],
 					"name": "onExperienceAdded",
 					"type": "event"
+				},
+				"0xc9db999bfdf942be16a549ef934c726e938a8296145f7983b17d8ebae631626c": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "startDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "present",
+							"type": "bool"
+						},
+						{
+							"indexed": false,
+							"name": "role",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "employer",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "city",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "country",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "description",
+							"type": "bytes32"
+						}
+					],
+					"name": "onExperienceAdded",
+					"type": "event"
+				},
+				"0x8472afd00c645325e14ce3dc390b209db828e473d8a6b917f0711398ff1df090": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "startDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "present",
+							"type": "bool"
+						},
+						{
+							"indexed": false,
+							"name": "role",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "employer",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "city",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "country",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "description",
+							"type": "string"
+						}
+					],
+					"name": "onExperienceAdded",
+					"type": "event"
+				},
+				"0x1f6281d3c80ed49021d94b5610267712d7a08b8ba9630f98b863711b0e244589": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "experienceId",
+							"type": "uint256"
+						},
+						{
+							"indexed": false,
+							"name": "startDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "present",
+							"type": "bool"
+						},
+						{
+							"indexed": false,
+							"name": "role",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "employer",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "city",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "country",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "description",
+							"type": "string"
+						}
+					],
+					"name": "onExperienceAdded",
+					"type": "event"
+				},
+				"0xec271d1d44c5a78a96a0afd2a17c33a68c38c2143be67b5880bb07f5ccabdd0b": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "experienceId",
+							"type": "uint256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						}
+					],
+					"name": "onExperienceClosed",
+					"type": "event"
 				}
 			},
 			"links": {},
-			"address": "0x58dcbcf21a3b3104eefcda83c2ec2fcbf2c6151b",
-			"updated_at": 1495523088278
+			"address": "0xca839cc0199b3e5cd5498376af2593e837eabac9",
+			"updated_at": 1495831252940
+		},
+		"1495732248899": {
+			"events": {
+				"0xc9db999bfdf942be16a549ef934c726e938a8296145f7983b17d8ebae631626c": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "startDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "present",
+							"type": "bool"
+						},
+						{
+							"indexed": false,
+							"name": "role",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "employer",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "city",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "country",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "description",
+							"type": "bytes32"
+						}
+					],
+					"name": "onExperienceAdded",
+					"type": "event"
+				}
+			},
+			"links": {},
+			"address": "0x04c509f2b9e89738c760a618f28af65f89134d6d",
+			"updated_at": 1495732343646
+		},
+		"1495739915852": {
+			"events": {
+				"0x1f6281d3c80ed49021d94b5610267712d7a08b8ba9630f98b863711b0e244589": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "experienceId",
+							"type": "uint256"
+						},
+						{
+							"indexed": false,
+							"name": "startDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						},
+						{
+							"indexed": false,
+							"name": "present",
+							"type": "bool"
+						},
+						{
+							"indexed": false,
+							"name": "role",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "employer",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "city",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "country",
+							"type": "bytes32"
+						},
+						{
+							"indexed": false,
+							"name": "description",
+							"type": "string"
+						}
+					],
+					"name": "onExperienceAdded",
+					"type": "event"
+				},
+				"0xec271d1d44c5a78a96a0afd2a17c33a68c38c2143be67b5880bb07f5ccabdd0b": {
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": false,
+							"name": "experienceId",
+							"type": "uint256"
+						},
+						{
+							"indexed": false,
+							"name": "endDate",
+							"type": "int256"
+						}
+					],
+					"name": "onExperienceClosed",
+					"type": "event"
+				}
+			},
+			"links": {},
+			"address": "0xabca97e355262459b31e7f93eb1d6ad3de1c2a09",
+			"updated_at": 1495739938719
 		}
 	},
 	"schema_version": "0.0.5",
-	"updated_at": 1495710473455
+	"updated_at": 1495836388187
 };
 
 /***/ }),
@@ -38376,6 +38842,7 @@ var Resume = __WEBPACK_IMPORTED_MODULE_3_truffle_contract___default()(__WEBPACK_
 var accounts;
 var account;
 var accountBalance;
+var isOwner;
 
 // library use to format the date
 var moment = __webpack_require__(0);
@@ -38387,7 +38854,7 @@ window.App = {
 
         web3.eth.getCoinbase(function (err, data) {
             if (err === null) {
-                console.log(data);
+                //console.log(data);
                 account = data;
 
                 web3.eth.getBalance(account, function (err, data) {
@@ -38407,12 +38874,12 @@ window.App = {
         App.reloadExperiences();
     },
 
-    updateAddExperienceButton: function() {
+    updateAddExperienceButton: function () {
         Resume.deployed().then(function (instance) {
             return instance.isOwner(account);
         }).then(function (result) {
-            console.log(result);
-            if(result) {
+            isOwner = result;
+            if (result) {
                 $("#addExperienceSection").show();
             } else {
                 $("#addExperienceSection").hide();
@@ -38423,42 +38890,60 @@ window.App = {
     addExperience: function () {
         var _startDate = new Date(document.getElementById('startDate').value).getTime();
         var _endDate = new Date(document.getElementById('endDate').value).getTime();
+        var _present = document.getElementById('present').checked;
+        var _role = document.getElementById('role').value;
         var _employer = document.getElementById('employer').value;
         var _city = document.getElementById('city').value;
         var _country = document.getElementById('country').value;
         var _description = document.getElementById('description').value;
 
         Resume.deployed().then(function (instance) {
-            return instance.addExperience(_startDate, _endDate, _employer, _city, _country, _description, {
+            return instance.addExperience(_startDate, _endDate, _present, _role, _employer, _city, _country, _description, {
                 from: account,
                 gas: 500000
             })
         }).then(function (result) {
-            App.reloadExperiences()
+            App.resetExperienceForm();
+            App.reloadExperiences();
         }).catch(function (err) {
-            console.error(err)
-        })
+            console.error(err);
+        });
+    },
+
+    resetExperienceForm: function () {
+        document.getElementById('startDate').value = null;
+        document.getElementById('endDate').value = null;
+        document.getElementById('present').checked = false;
+        document.getElementById('role').value = '';
+        document.getElementById('employer').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('country').value = '';
+        document.getElementById('description').value = '';
     },
 
     // Load and display the list of experiences
     reloadExperiences: function () {
         Resume.deployed().then(function (instance) {
-            return instance.getExperienceList()
+            return instance.getExperiences()
         }).then(function (result) {
+            App.cleanExperienceList();
+            //console.log(result);
 
-            cleanExperienceList();
+            var experiences = [];
+            for (var i = 0; i < result[0].length; i++) {
+                experiences.push({
+                    id: Number(result[0][i]),
+                    startDate: Number(result[1][i]),
+                    endDate: Number(result[2][i]),
+                    present: result[3][i]
+                })
+            }
+            experiences.sort(function (a, b) {
+                return b.startDate - a.startDate;
+            });
 
-            // from newer entry
-            for (var i = result[0].length - 1; i >= 0; i--) {
-                displayExperience(
-                    result[0][i],
-                    result[1][i],
-                    result[2][i],
-                    result[3][i],
-                    result[4][i],
-                    result[5][i],
-                    result[6][i]
-                )
+            for (var j = 0; j < experiences.length; j++) {
+                App.displayExperience(experiences[j].id);
             }
         }).catch(function (err) {
             console.error(err);
@@ -38467,83 +38952,129 @@ window.App = {
 
     // Listen for events raised from the contract
     listenToEvents: function () {
+        Resume.deployed().then(function (instance) {
+            instance.onExperienceAdded({}, {
+                fromBlock: 0,
+                toBlock: 'latest'
+            }).watch(function (error, event) {
+                document.getElementById("events").innerHTML += '<li class="list-group-item">Experience #' + event.args.experienceId.toNumber() + ' was added, starting on ' + new Date(event.args.startDate.toNumber()) + ', working for ' + web3.toAscii(event.args.employer) + ' as a ' + web3.toAscii(event.args.role) + '</li>';
+            });
 
-        // Uncomment the following lines if you want to display the events
-        /*
-         Resume.deployed().then(function(instance) {
-         instance.onExperienceAdded({}, {
-         fromBlock: 0,
-         toBlock: 'latest'
-         }).watch(function(error, event) {
-         document.getElementById("experienceAdded").innerHTML += JSON.stringify(event);
-         });
-         });
-         */
+            instance.onExperienceClosed({}, {
+                fromBlock: 0,
+                toBlock: 'latest'
+            }).watch(function (error, event) {
+                document.getElementById("events").innerHTML += '<li class="list-group-item">Experience #' + event.args.experienceId.toNumber() + ' was closed on ' + new Date(event.args.endDate.toNumber()) + '</li>';
+            });
+        });
+    },
+
+    // Clear the list of experiences to display the fresh one
+    cleanExperienceList: function () {
+        var elements = document.getElementsByClassName('experience');
+
+        while (elements.length > 0) {
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    },
+
+    // Display an experience in the list
+    displayExperience: function (experienceId) {
+
+        Resume.deployed().then(function (instance) {
+            return instance.getExperience(experienceId);
+        }).then(function (experience) {
+            var experienceObject = {
+                id: experienceId,
+                startDate: new Date(Number(experience[0])),
+                endDate: new Date(Number(experience[1])),
+                present: experience[2],
+                role: web3.toAscii(experience[3]),
+                employer: web3.toAscii(experience[4]),
+                city: web3.toAscii(experience[5]),
+                country: web3.toAscii(experience[6]),
+                description: experience[7]
+            };
+            //console.log(experienceObject);
+
+            var rowMarker = document.createElement('div');
+            rowMarker.className = 'row row-eq-height experience';
+
+            // prepare and display the experience detail (employer, description, dates, location)
+            var divMarker = document.createElement('div');
+            divMarker.className = 'col-xs-12';
+
+            // employer
+            var h3Marker = document.createElement('h3');
+            //var aMarker = document.createElement('a');
+            //aMarker.href = '#';
+            //aMarker.innerHTML = web3.toAscii(employer);
+            //h3Marker.appendChild(aMarker);
+            h3Marker.innerHTML = experienceObject.role + ', ' + experienceObject.employer;
+            divMarker.appendChild(h3Marker);
+
+            // start and end dates
+            var pMarker = document.createElement('p');
+            pMarker.className = 'text-muted';
+            var spanMarker = document.createElement('span');
+            spanMarker.className = 'glyphicon glyphicon-calendar';
+            pMarker.appendChild(spanMarker);
+            var fromDate = moment(experienceObject.startDate).format('DD/MM/YYYY');
+            var toDate = moment(experienceObject.endDate).format('DD/MM/YYYY');
+            pMarker.innerHTML = pMarker.innerHTML + ' From: ' + fromDate + ' To: ' + (experienceObject.present ? 'Present' : toDate);
+            divMarker.appendChild(pMarker);
+
+            // description
+            var descriptionMarker = document.createElement('p');
+            descriptionMarker.innerHTML = experienceObject.description;
+            divMarker.appendChild(descriptionMarker);
+
+            // Location
+            var pMarker2 = document.createElement('p');
+            pMarker2.className = 'text-muted';
+            var spanMarker2 = document.createElement('span');
+            spanMarker2.className = 'glyphicon glyphicon-map-marker';
+            pMarker.appendChild(spanMarker2);
+
+            pMarker.innerHTML = pMarker.innerHTML + ' ' + experienceObject.city + ' (' + experienceObject.country + ')';
+            divMarker.appendChild(pMarker);
+
+            rowMarker.appendChild(divMarker);
+
+            if (isOwner && experienceObject.present) {
+                var closeDiv = document.createElement('div');
+                closeDiv.className = 'input-group col-xs-4';
+                closeDiv.innerHTML = '<input class="form-control" type="date" id="closeDate-' + experienceId + '"><span class="input-group-btn"><button id="closeButton-' + experienceId + '" type="button" class="btn btn-danger" onclick="App.closeExperience(' + experienceId + '); return false;">Close</button></span>';
+                rowMarker.appendChild(closeDiv);
+            }
+
+            var experienceList = document.getElementById('experience-list');
+            experienceList.appendChild(rowMarker);
+
+            var hrMarker = document.createElement('hr');
+            hrMarker.className = 'experience';
+            experienceList.appendChild(hrMarker);
+        });
+    },
+
+    closeExperience: function (experienceId) {
+        var dateInput = document.getElementById('closeDate-' + experienceId);
+        var endDateString = dateInput.value;
+        if (endDateString !== '') {
+            var closeButton = document.getElementById('closeButton-' + experienceId);
+            closeButton.disabled = true;
+            dateInput.disabled = true;
+            var endDate = new Date(endDateString);
+            Resume.deployed().then(function (instance) {
+                return instance.closeOpenExperience(experienceId, endDate.getTime(), {from: account, gas: 500000});
+            }).then(function () {
+                App.reloadExperiences();
+            }).catch(function (err) {
+                console.error(err);
+            });
+        }
     }
 };
-
-// Clear the list of experiences to display the fresh one
-function cleanExperienceList() {
-    var elements = document.getElementsByClassName('experience');
-
-    while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-}
-
-// Display an experience in the list
-function displayExperience(experienceId, startDate, endDate, employer, city, country, description) {
-
-    var rowMarker = document.createElement('div');
-    rowMarker.className = 'row row-eq-height experience';
-
-    // prepare and display the experience detail (employer, description, dates, location)
-    var divMarker = document.createElement('div');
-    divMarker.className = 'col-xs-6';
-
-    // employer
-    var h3Marker = document.createElement('h3');
-    var aMarker = document.createElement('a');
-    aMarker.href = '#';
-    aMarker.innerHTML = web3.toAscii(employer);
-    h3Marker.appendChild(aMarker);
-
-    divMarker.appendChild(h3Marker);
-
-    // start and end dates
-    var pMarker = document.createElement('p');
-    pMarker.className = 'text-muted';
-    var spanMarker = document.createElement('span');
-    spanMarker.className = 'glyphicon glyphicon-calendar';
-    pMarker.appendChild(spanMarker);
-    var fromDate = moment(new Date(Number(startDate))).format('DD/MM/YYYY');
-    var toDate = moment(new Date(Number(endDate))).format('DD/MM/YYYY');
-    pMarker.innerHTML = pMarker.innerHTML + ' From: ' + fromDate + ' To: ' + toDate;
-    divMarker.appendChild(pMarker);
-
-    // description
-    var descriptionMarker = document.createElement('p');
-    descriptionMarker.innerHTML = web3.toAscii(description);
-    divMarker.appendChild(descriptionMarker);
-
-    // Location
-    var pMarker2 = document.createElement('p');
-    pMarker2.className = 'text-muted';
-    var spanMarker2 = document.createElement('span');
-    spanMarker2.className = 'glyphicon glyphicon-map-marker';
-    pMarker.appendChild(spanMarker2);
-
-    pMarker.innerHTML = pMarker.innerHTML + ' ' + web3.toAscii(city) + ' (' + web3.toAscii(country) + ')';
-    divMarker.appendChild(pMarker);
-
-    rowMarker.appendChild(divMarker);
-
-    var experienceList = document.getElementById('experience-list');
-    var hrMarker = document.createElement('hr');
-    hrMarker.className = 'experience';
-    experienceList.appendChild(rowMarker);
-    experienceList.appendChild(hrMarker)
-}
 
 window.addEventListener('load', function () {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
