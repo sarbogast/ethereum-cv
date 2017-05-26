@@ -97,7 +97,7 @@ contract Resume is CVExtender, mortal {
     }
 
     function getTitle() constant returns (string) {
-        return "Fullstack Developer";
+        return "Sebastien Arbogast, Dapp Developer";
     }
 
     function getAuthor() constant returns (string, string) {
